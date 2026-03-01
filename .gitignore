@@ -1,0 +1,5 @@
+displaylink-watchdog
+tests/test-logic
+*.o
+*.dSYM/
+.DS_Store
