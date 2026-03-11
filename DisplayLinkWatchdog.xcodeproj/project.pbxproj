@@ -1,0 +1,404 @@
+// !$*UTF8*$!
+{
+archiveVersion = 1;
+classes = {
+};
+objectVersion = 56;
+objects = {
+
+/* Begin PBXBuildFile section */
+A1B2C3D4E5F6000000000021 /* DisplayLinkWatchdogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000020 /* DisplayLinkWatchdogApp.swift */; };
+A1B2C3D4E5F6000000000023 /* WatchdogEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000022 /* WatchdogEngine.swift */; };
+A1B2C3D4E5F6000000000025 /* WatchdogConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000024 /* WatchdogConfig.swift */; };
+A1B2C3D4E5F6000000000027 /* USBWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000026 /* USBWatcher.swift */; };
+A1B2C3D4E5F6000000000029 /* DisplayWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000028 /* DisplayWatcher.swift */; };
+A1B2C3D4E5F600000000002B /* DisplayLinkRestarter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600000000002A /* DisplayLinkRestarter.swift */; };
+A1B2C3D4E5F600000000002D /* USBDeviceScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600000000002C /* USBDeviceScanner.swift */; };
+A1B2C3D4E5F600000000002F /* MenuBarStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F600000000002E /* MenuBarStatusView.swift */; };
+A1B2C3D4E5F6000000000031 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000030 /* SettingsView.swift */; };
+A1B2C3D4E5F6000000000033 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000032 /* LogView.swift */; };
+A1B2C3D4E5F6000000000035 /* LogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000034 /* LogStore.swift */; };
+A1B2C3D4E5F6000000000037 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000036 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+A1B2C3D4E5F6000000000005 /* DisplayLinkWatchdog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DisplayLink Watchdog.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+A1B2C3D4E5F6000000000020 /* DisplayLinkWatchdogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLinkWatchdogApp.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000022 /* WatchdogEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogEngine.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000024 /* WatchdogConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchdogConfig.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000026 /* USBWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USBWatcher.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000028 /* DisplayWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayWatcher.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F600000000002A /* DisplayLinkRestarter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLinkRestarter.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F600000000002C /* USBDeviceScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USBDeviceScanner.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F600000000002E /* MenuBarStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarStatusView.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000030 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000032 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000034 /* LogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogStore.swift; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000036 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000038 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+A1B2C3D4E5F6000000000039 /* DisplayLinkWatchdog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DisplayLinkWatchdog.entitlements; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+A1B2C3D4E5F6000000000008 /* Frameworks */ = {
+isa = PBXFrameworksBuildPhase;
+buildActionMask = 2147483647;
+files = (
+);
+runOnlyForDeploymentPostprocessing = 0;
+};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+A1B2C3D4E5F6000000000002 = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F6000000000016 /* DisplayLinkWatchdog */,
+A1B2C3D4E5F6000000000039 /* DisplayLinkWatchdog.entitlements */,
+A1B2C3D4E5F6000000000003 /* Products */,
+);
+sourceTree = "<group>";
+};
+A1B2C3D4E5F6000000000003 /* Products */ = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F6000000000005 /* DisplayLink Watchdog.app */,
+);
+name = Products;
+sourceTree = "<group>";
+};
+A1B2C3D4E5F6000000000016 /* DisplayLinkWatchdog */ = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F6000000000010 /* App */,
+A1B2C3D4E5F6000000000011 /* Core */,
+A1B2C3D4E5F6000000000012 /* Views */,
+A1B2C3D4E5F6000000000013 /* Utilities */,
+A1B2C3D4E5F6000000000014 /* Resources */,
+);
+path = DisplayLinkWatchdog;
+sourceTree = "<group>";
+};
+A1B2C3D4E5F6000000000010 /* App */ = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F6000000000020 /* DisplayLinkWatchdogApp.swift */,
+);
+path = App;
+sourceTree = "<group>";
+};
+A1B2C3D4E5F6000000000011 /* Core */ = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F6000000000022 /* WatchdogEngine.swift */,
+A1B2C3D4E5F6000000000024 /* WatchdogConfig.swift */,
+A1B2C3D4E5F6000000000026 /* USBWatcher.swift */,
+A1B2C3D4E5F6000000000028 /* DisplayWatcher.swift */,
+A1B2C3D4E5F600000000002A /* DisplayLinkRestarter.swift */,
+A1B2C3D4E5F600000000002C /* USBDeviceScanner.swift */,
+);
+path = Core;
+sourceTree = "<group>";
+};
+A1B2C3D4E5F6000000000012 /* Views */ = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F600000000002E /* MenuBarStatusView.swift */,
+A1B2C3D4E5F6000000000030 /* SettingsView.swift */,
+A1B2C3D4E5F6000000000032 /* LogView.swift */,
+);
+path = Views;
+sourceTree = "<group>";
+};
+A1B2C3D4E5F6000000000013 /* Utilities */ = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F6000000000034 /* LogStore.swift */,
+);
+path = Utilities;
+sourceTree = "<group>";
+};
+A1B2C3D4E5F6000000000014 /* Resources */ = {
+isa = PBXGroup;
+children = (
+A1B2C3D4E5F6000000000036 /* Assets.xcassets */,
+A1B2C3D4E5F6000000000038 /* Info.plist */,
+);
+path = Resources;
+sourceTree = "<group>";
+};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+A1B2C3D4E5F6000000000004 /* DisplayLinkWatchdog */ = {
+isa = PBXNativeTarget;
+buildConfigurationList = A1B2C3D4E5F600000000000A /* Build configuration list for PBXNativeTarget "DisplayLinkWatchdog" */;
+buildPhases = (
+A1B2C3D4E5F6000000000006 /* Sources */,
+A1B2C3D4E5F6000000000008 /* Frameworks */,
+A1B2C3D4E5F6000000000007 /* Resources */,
+);
+buildRules = (
+);
+dependencies = (
+);
+name = DisplayLinkWatchdog;
+productName = DisplayLinkWatchdog;
+productReference = A1B2C3D4E5F6000000000005 /* DisplayLink Watchdog.app */;
+productType = "com.apple.product-type.application";
+};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+A1B2C3D4E5F6000000000001 /* Project object */ = {
+isa = PBXProject;
+attributes = {
+BuildIndependentTargetsInParallel = 1;
+LastSwiftUpdateCheck = 1500;
+LastUpgradeCheck = 1500;
+TargetAttributes = {
+A1B2C3D4E5F6000000000004 = {
+CreatedOnToolsVersion = 15.0;
+};
+};
+};
+buildConfigurationList = A1B2C3D4E5F6000000000009 /* Build configuration list for PBXProject "DisplayLinkWatchdog" */;
+compatibilityVersion = "Xcode 14.0";
+developmentRegion = en;
+hasScannedForEncodings = 0;
+knownRegions = (
+en,
+Base,
+);
+mainGroup = A1B2C3D4E5F6000000000002;
+productRefGroup = A1B2C3D4E5F6000000000003 /* Products */;
+projectDirPath = "";
+projectRoot = "";
+targets = (
+A1B2C3D4E5F6000000000004 /* DisplayLinkWatchdog */,
+);
+};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+A1B2C3D4E5F6000000000007 /* Resources */ = {
+isa = PBXResourcesBuildPhase;
+buildActionMask = 2147483647;
+files = (
+A1B2C3D4E5F6000000000037 /* Assets.xcassets in Resources */,
+);
+runOnlyForDeploymentPostprocessing = 0;
+};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+A1B2C3D4E5F6000000000006 /* Sources */ = {
+isa = PBXSourcesBuildPhase;
+buildActionMask = 2147483647;
+files = (
+A1B2C3D4E5F6000000000021 /* DisplayLinkWatchdogApp.swift in Sources */,
+A1B2C3D4E5F6000000000023 /* WatchdogEngine.swift in Sources */,
+A1B2C3D4E5F6000000000025 /* WatchdogConfig.swift in Sources */,
+A1B2C3D4E5F6000000000027 /* USBWatcher.swift in Sources */,
+A1B2C3D4E5F6000000000029 /* DisplayWatcher.swift in Sources */,
+A1B2C3D4E5F600000000002B /* DisplayLinkRestarter.swift in Sources */,
+A1B2C3D4E5F600000000002D /* USBDeviceScanner.swift in Sources */,
+A1B2C3D4E5F600000000002F /* MenuBarStatusView.swift in Sources */,
+A1B2C3D4E5F6000000000031 /* SettingsView.swift in Sources */,
+A1B2C3D4E5F6000000000033 /* LogView.swift in Sources */,
+A1B2C3D4E5F6000000000035 /* LogStore.swift in Sources */,
+);
+runOnlyForDeploymentPostprocessing = 0;
+};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+A1B2C3D4E5F600000000000B /* Debug */ = {
+isa = XCBuildConfiguration;
+buildSettings = {
+ALWAYS_SEARCH_USER_PATHS = NO;
+CLANG_ANALYZER_NONNULL = YES;
+CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+CLANG_ENABLE_MODULES = YES;
+CLANG_ENABLE_OBJC_ARC = YES;
+CLANG_ENABLE_OBJC_WEAK = YES;
+CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+CLANG_WARN_BOOL_CONVERSION = YES;
+CLANG_WARN_COMMA = YES;
+CLANG_WARN_CONSTANT_CONVERSION = YES;
+CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+CLANG_WARN_EMPTY_BODY = YES;
+CLANG_WARN_ENUM_CONVERSION = YES;
+CLANG_WARN_INFINITE_RECURSION = YES;
+CLANG_WARN_INT_CONVERSION = YES;
+CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+CLANG_WARN_STRICT_PROTOTYPES = YES;
+CLANG_WARN_SUSPICIOUS_MOVE = YES;
+CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+CLANG_WARN_UNREACHABLE_CODE = YES;
+CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+COPY_PHASE_STRIP = NO;
+DEBUG_INFORMATION_FORMAT = dwarf;
+ENABLE_STRICT_OBJC_MSGSEND = YES;
+ENABLE_TESTABILITY = YES;
+GCC_C_LANGUAGE_STANDARD = gnu17;
+GCC_DYNAMIC_NO_PIC = NO;
+GCC_NO_COMMON_BLOCKS = YES;
+GCC_OPTIMIZATION_LEVEL = 0;
+GCC_PREPROCESSOR_DEFINITIONS = (
+"DEBUG=1",
+"$(inherited)",
+);
+GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+GCC_WARN_UNDECLARED_SELECTOR = YES;
+GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+GCC_WARN_UNUSED_FUNCTION = YES;
+GCC_WARN_UNUSED_VARIABLE = YES;
+MACOSX_DEPLOYMENT_TARGET = 13.0;
+MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+MTL_FAST_MATH = YES;
+ONLY_ACTIVE_ARCH = YES;
+SDKROOT = macosx;
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+};
+name = Debug;
+};
+A1B2C3D4E5F600000000000C /* Release */ = {
+isa = XCBuildConfiguration;
+buildSettings = {
+ALWAYS_SEARCH_USER_PATHS = NO;
+CLANG_ANALYZER_NONNULL = YES;
+CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+CLANG_ENABLE_MODULES = YES;
+CLANG_ENABLE_OBJC_ARC = YES;
+CLANG_ENABLE_OBJC_WEAK = YES;
+CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+CLANG_WARN_BOOL_CONVERSION = YES;
+CLANG_WARN_COMMA = YES;
+CLANG_WARN_CONSTANT_CONVERSION = YES;
+CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+CLANG_WARN_EMPTY_BODY = YES;
+CLANG_WARN_ENUM_CONVERSION = YES;
+CLANG_WARN_INFINITE_RECURSION = YES;
+CLANG_WARN_INT_CONVERSION = YES;
+CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+CLANG_WARN_STRICT_PROTOTYPES = YES;
+CLANG_WARN_SUSPICIOUS_MOVE = YES;
+CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+CLANG_WARN_UNREACHABLE_CODE = YES;
+CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+COPY_PHASE_STRIP = NO;
+DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+ENABLE_NS_ASSERTIONS = NO;
+ENABLE_STRICT_OBJC_MSGSEND = YES;
+GCC_C_LANGUAGE_STANDARD = gnu17;
+GCC_NO_COMMON_BLOCKS = YES;
+GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+GCC_WARN_UNDECLARED_SELECTOR = YES;
+GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+GCC_WARN_UNUSED_FUNCTION = YES;
+GCC_WARN_UNUSED_VARIABLE = YES;
+MACOSX_DEPLOYMENT_TARGET = 13.0;
+MTL_ENABLE_DEBUG_INFO = NO;
+MTL_FAST_MATH = YES;
+SDKROOT = macosx;
+SWIFT_OPTIMIZATION_LEVEL = "-O";
+VALIDATE_PRODUCT = YES;
+};
+name = Release;
+};
+A1B2C3D4E5F600000000000D /* Debug */ = {
+isa = XCBuildConfiguration;
+buildSettings = {
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+CODE_SIGN_ENTITLEMENTS = DisplayLinkWatchdog.entitlements;
+CODE_SIGN_STYLE = Automatic;
+COMBINE_HIDPI_IMAGES = YES;
+CURRENT_PROJECT_VERSION = 1;
+ENABLE_HARDENED_RUNTIME = YES;
+GENERATE_INFOPLIST_FILE = NO;
+INFOPLIST_FILE = DisplayLinkWatchdog/Resources/Info.plist;
+LD_RUNPATH_SEARCH_PATHS = (
+"$(inherited)",
+"@executable_path/../Frameworks",
+);
+MACOSX_DEPLOYMENT_TARGET = 13.0;
+MARKETING_VERSION = 1.0.0;
+PRODUCT_BUNDLE_IDENTIFIER = "com.kakkarpulkit.displaylink-watchdog";
+PRODUCT_NAME = "DisplayLink Watchdog";
+SWIFT_EMIT_LOC_STRINGS = YES;
+SWIFT_VERSION = 5.9;
+};
+name = Debug;
+};
+A1B2C3D4E5F600000000000E /* Release */ = {
+isa = XCBuildConfiguration;
+buildSettings = {
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+CODE_SIGN_ENTITLEMENTS = DisplayLinkWatchdog.entitlements;
+CODE_SIGN_STYLE = Automatic;
+COMBINE_HIDPI_IMAGES = YES;
+CURRENT_PROJECT_VERSION = 1;
+ENABLE_HARDENED_RUNTIME = YES;
+GENERATE_INFOPLIST_FILE = NO;
+INFOPLIST_FILE = DisplayLinkWatchdog/Resources/Info.plist;
+LD_RUNPATH_SEARCH_PATHS = (
+"$(inherited)",
+"@executable_path/../Frameworks",
+);
+MACOSX_DEPLOYMENT_TARGET = 13.0;
+MARKETING_VERSION = 1.0.0;
+PRODUCT_BUNDLE_IDENTIFIER = "com.kakkarpulkit.displaylink-watchdog";
+PRODUCT_NAME = "DisplayLink Watchdog";
+SWIFT_EMIT_LOC_STRINGS = YES;
+SWIFT_VERSION = 5.9;
+};
+name = Release;
+};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+A1B2C3D4E5F6000000000009 /* Build configuration list for PBXProject "DisplayLinkWatchdog" */ = {
+isa = XCConfigurationList;
+buildConfigurations = (
+A1B2C3D4E5F600000000000B /* Debug */,
+A1B2C3D4E5F600000000000C /* Release */,
+);
+defaultConfigurationIsVisible = 0;
+defaultConfigurationName = Release;
+};
+A1B2C3D4E5F600000000000A /* Build configuration list for PBXNativeTarget "DisplayLinkWatchdog" */ = {
+isa = XCConfigurationList;
+buildConfigurations = (
+A1B2C3D4E5F600000000000D /* Debug */,
+A1B2C3D4E5F600000000000E /* Release */,
+);
+defaultConfigurationIsVisible = 0;
+defaultConfigurationName = Release;
+};
+/* End XCConfigurationList section */
+
+};
+rootObject = A1B2C3D4E5F6000000000001 /* Project object */;
+}

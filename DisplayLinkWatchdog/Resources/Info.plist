@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- App identity -->
+    <key>CFBundleIdentifier</key>
+    <string>com.kakkarpulkit.displaylink-watchdog</string>
+    <key>CFBundleName</key>
+    <string>DisplayLink Watchdog</string>
+    <key>CFBundleDisplayName</key>
+    <string>DisplayLink Watchdog</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
+
+    <!-- Deployment -->
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+
+    <!-- Menu bar only — no Dock icon -->
+    <key>LSUIElement</key>
+    <true/>
+
+    <!-- Principal class for SwiftUI apps -->
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+
+    <!-- Required by macOS for human-readable app name -->
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright © 2024 Pulkit Kakkar. MIT License.</string>
+
+    <!-- Privacy: USB / hardware access — describe why this app uses IOKit -->
+    <key>NSUSBPrivacyUsageDescription</key>
+    <string>DisplayLink Watchdog monitors your DisplayLink USB adapter to automatically restart it when displays fail to initialise after a power cycle.</string>
+</dict>
+</plist>

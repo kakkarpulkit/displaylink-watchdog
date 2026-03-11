@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Hardened Runtime: required for notarization and App Store -->
+    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+    <false/>
+
+    <!-- IOKit USB access: required to watch for DisplayLink adapter on USB bus -->
+    <key>com.apple.security.device.usb</key>
+    <true/>
+
+    <!--
+        App Sandbox is intentionally NOT enabled.
+        The core restart logic uses /usr/bin/killall to stop DisplayLink processes,
+        which is incompatible with the App Sandbox. The code is structured
+        (DisplayLinkRestarter protocol) so sandboxing can be added later via an
+        XPC privileged helper tool without changing the core logic.
+    -->
+</dict>
+</plist>

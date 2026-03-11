@@ -3,3 +3,9 @@ tests/test-logic
 *.o
 *.dSYM/
 .DS_Store
+build/
+*.xcuserdata/
+xcuserdata/
+DerivedData/
+*.xccheckout
+*.resolved
