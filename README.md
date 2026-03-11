@@ -1,10 +1,10 @@
 # DisplayLink Watchdog
 
-A macOS menu bar app that automatically fixes DisplayLink monitors that fail to initialise after a power cycle — no Terminal needed.
+A macOS menu bar app that automatically fixes DisplayLink monitors that fail to initialize after a power cycle — no Terminal needed.
 
 ## The Problem
 
-If you use a DisplayLink USB adapter (e.g. Sonnet DisplayLink Dual 4K) with a dock on a smart outlet, power cycling the outlet causes a race condition: the DisplayLink driver finishes scanning before the adapter initialises on USB, leaving the monitor dark. This app detects that condition in real time and restarts the DisplayLink driver automatically — typically within 2 seconds.
+If you use a DisplayLink USB adapter (e.g. Sonnet DisplayLink Dual 4K) with a dock on a smart outlet, power cycling the outlet causes a race condition: the DisplayLink driver finishes scanning before the adapter initializes on USB, leaving the monitor dark. This app detects that condition in real time and restarts the DisplayLink driver automatically — typically within 2 seconds.
 
 ## Install
 
@@ -23,9 +23,11 @@ That's it. The app runs silently in the menu bar and fixes your displays wheneve
 
 | Icon | Meaning |
 |------|---------|
-| `display.2` | All displays connected |
-| `display.trianglebadge.exclamationmark` | Adapter present but display count is low — watching |
-| `display.trianglebadge.exclamationmark` | No adapter detected / DisplayLink Manager not installed |
+| 🖥🖥 (`display.2`) | All displays connected — everything is working |
+| ⚠️ (`display.trianglebadge.exclamationmark`) | Adapter present but fewer displays than expected — watchdog is actively watching |
+| ⚠️ (`display.trianglebadge.exclamationmark`) | No DisplayLink adapter detected, or DisplayLink Manager not installed |
+
+The icon is the same SF Symbol for both warning states; check the menu bar dropdown for the specific status message.
 
 ## Requirements
 
@@ -38,7 +40,7 @@ That's it. The app runs silently in the menu bar and fixes your displays wheneve
 The watchdog uses two event sources — no polling during normal operation:
 
 1. **IOKit USB watcher** — fires the instant your DisplayLink adapter appears on the USB bus
-2. **CoreGraphics display callback** — fires when macOS recognises a new display
+2. **CoreGraphics display callback** — fires when macOS recognizes a new display
 
 Decision logic (unchanged from the original daemon):
 ```
