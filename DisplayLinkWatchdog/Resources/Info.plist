@@ -42,6 +42,6 @@
 
     <!-- Privacy: USB / hardware access — describe why this app uses IOKit -->
     <key>NSUSBPrivacyUsageDescription</key>
-    <string>DisplayLink Watchdog monitors your DisplayLink USB adapter to automatically restart it when displays fail to initialize after a power cycle.</string>
+    <string>DisplayLink Watchdog monitors your DisplayLink USB adapter to detect when it reconnects after sleep, a dock reconnect, or a power cycle, and automatically restarts the DisplayLink driver to restore your monitors.</string>
 </dict>
 </plist>

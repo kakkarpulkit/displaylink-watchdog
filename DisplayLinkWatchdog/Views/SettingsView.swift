@@ -127,7 +127,7 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            Text("The watchdog reacts instantly to USB and display events. Polling is a safety net for missed events.")
+            Text("The watchdog reacts instantly to USB attach and display events (sleep/wake, reconnect, power restore). Polling is a safety net for missed events.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

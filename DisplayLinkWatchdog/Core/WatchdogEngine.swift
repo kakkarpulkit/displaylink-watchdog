@@ -244,13 +244,13 @@ final class WatchdogEngine: ObservableObject {
     var statusDescription: String {
         guard isAdapterPresent else {
             return isDisplayLinkInstalled
-                ? "No DisplayLink adapter detected"
+                ? "No DisplayLink adapter detected — is it connected?"
                 : "DisplayLink Manager not installed"
         }
         if displayCount >= config.expectedDisplays {
             return "\(displayCount)/\(config.expectedDisplays) displays connected"
         }
-        return "\(displayCount)/\(config.expectedDisplays) — watching…"
+        return "\(displayCount)/\(config.expectedDisplays) displays — watching for changes…"
     }
 
     /// SF Symbol name reflecting current health status.
