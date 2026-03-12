@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import ServiceManagement
 
 /// Content of the menu bar dropdown. Uses `.menu` style so it behaves like a

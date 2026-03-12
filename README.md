@@ -208,7 +208,7 @@ tests/
 - All `@Published` mutations are dispatched via `DispatchQueue.main.async`.
 
 **Config change propagation:**
-- `WatchdogEngine` subscribes via Combine to `config.$vendorID`, `config.$productID`, and `config.$pollInterval`. Changes are debounced (500 ms) and automatically restart the affected watcher or timer, so settings take effect immediately without restarting the app.
+- The poll timer uses a self-rescheduling pattern: each time it fires, it reads the latest `config.pollInterval` and schedules the next fire. Changes to the poll interval in Settings take effect on the next timer cycle without restarting the app. Changes to vendor ID and product ID take effect on the next app restart.
 
 **Restart isolation:**
 - `DisplayLinkRestarter` is a protocol. The live implementation uses a subprocess and `NSWorkspace.openApplication`. Swapping it for an XPC privileged helper (for future App Sandbox compliance) requires changing only this one class.

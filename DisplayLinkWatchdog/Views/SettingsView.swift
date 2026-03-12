@@ -94,11 +94,23 @@ struct SettingsView: View {
                 value: $engine.config.expectedDisplays,
                 in: 1 ... 10
             )
+            .onChange(of: engine.config.expectedDisplays) { newValue in
+                // Ensure baseDisplays is never greater than expectedDisplays.
+                if newValue < engine.config.baseDisplays {
+                    engine.config.baseDisplays = newValue
+                }
+            }
             Stepper(
                 "Base (non-DisplayLink) displays: \(engine.config.baseDisplays)",
                 value: $engine.config.baseDisplays,
                 in: 0 ... 9
             )
+            .onChange(of: engine.config.baseDisplays) { newValue in
+                // Ensure baseDisplays is never greater than expectedDisplays.
+                if newValue > engine.config.expectedDisplays {
+                    engine.config.expectedDisplays = newValue
+                }
+            }
             Text(
                 "Expected: total external monitors when everything is working. " +
                 "Base: non-DisplayLink monitors that must be online before a fix is attempted " +
@@ -145,12 +157,16 @@ struct SettingsView: View {
         Binding(
             get: { selectedDevice },
             set: { dev in
-                guard let dev else { return }
-                engine.config.vendorID    = dev.vendorID
-                engine.config.productID   = dev.productID
-                engine.config.adapterName = dev.displayName
-                vendorIDText  = dev.vendorIDHex
-                productIDText = dev.productIDHex
+                if let dev = dev {
+                    engine.config.vendorID    = dev.vendorID
+                    engine.config.productID   = dev.productID
+                    engine.config.adapterName = dev.displayName
+                    vendorIDText  = dev.vendorIDHex
+                    productIDText = dev.productIDHex
+                } else {
+                    // Switch to manual / custom mode: clear adapter name but keep current IDs.
+                    engine.config.adapterName = ""
+                }
             }
         )
     }

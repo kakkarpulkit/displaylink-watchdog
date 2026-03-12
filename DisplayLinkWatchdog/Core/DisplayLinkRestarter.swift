@@ -78,7 +78,12 @@ final class LiveDisplayLinkRestarter: DisplayLinkRestarter {
         p.arguments        = args
         p.standardOutput   = FileHandle.nullDevice
         p.standardError    = FileHandle.nullDevice
-        try? p.run()
+        do {
+            try p.run()
+        } catch {
+            NSLog("DisplayLinkWatchdog: Failed to run process '\(path)' with arguments \(args): \(error)")
+            return -1
+        }
         p.waitUntilExit()
         return p.terminationStatus
     }

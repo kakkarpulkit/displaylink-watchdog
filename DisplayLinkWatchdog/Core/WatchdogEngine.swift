@@ -98,6 +98,7 @@ final class WatchdogEngine: ObservableObject {
     func refreshState() {
         let count   = externalDisplayCount()
         let adapter = adapterIsPresent()
+        checkDisplayLinkInstalled()
         DispatchQueue.main.async { [weak self] in
             self?.displayCount   = count
             self?.isAdapterPresent = adapter
@@ -130,14 +131,23 @@ final class WatchdogEngine: ObservableObject {
     }
 
     private func startPollTimer() {
-        // Timer must be added to the main run loop since it's created on the main thread
+        // Read and validate the poll interval each time we schedule the timer so that
+        // runtime changes to `config.pollInterval` take effect without restarting.
+        let interval = max(config.pollInterval, 10)
+
+        // Use a non-repeating timer and reschedule after each fire so we always use
+        // the latest `config.pollInterval` value.
+        pollTimer?.invalidate()
         pollTimer = Timer.scheduledTimer(
-            withTimeInterval: config.pollInterval,
-            repeats: true
+            withTimeInterval: interval,
+            repeats: false
         ) { [weak self] _ in
-            self?.workQueue.async { [weak self] in
-                self?.attemptFix(trigger: "poll")
+            guard let self else { return }
+            self.workQueue.async {
+                self.attemptFix(trigger: "poll")
             }
+            // Reschedule using the (possibly updated) poll interval.
+            self.startPollTimer()
         }
     }
 
@@ -221,12 +231,15 @@ final class WatchdogEngine: ObservableObject {
         return (0 ..< Int(count)).filter { CGDisplayIsBuiltin(ids[$0]) == 0 }.count
     }
 
+    private static let displayLinkManagerPaths = [
+        "/Applications/DisplayLink Manager.app",
+        "/Applications/Utilities/DisplayLink Manager.app",
+    ]
+
     private func checkDisplayLinkInstalled() {
-        let paths = [
-            "/Applications/DisplayLink Manager.app",
-            "/Applications/Utilities/DisplayLink Manager.app",
-        ]
-        let installed = paths.contains { FileManager.default.fileExists(atPath: $0) }
+        let installed = Self.displayLinkManagerPaths.contains {
+            FileManager.default.fileExists(atPath: $0)
+        }
         DispatchQueue.main.async { [weak self] in
             self?.isDisplayLinkInstalled = installed
         }

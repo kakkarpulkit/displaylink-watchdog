@@ -22,7 +22,7 @@ uninstall:
 
 # ── macOS app (primary distribution) ──────────────────────────────────────
 
-## Debug build — output in build/Debug/
+## Debug build — output in build/Build/Products/Debug/
 app:
 	xcodebuild -project $(XCPROJECT) -scheme $(SCHEME) \
 	           -configuration Debug \
@@ -30,7 +30,7 @@ app:
 	           CODE_SIGNING_ALLOWED=NO \
 	           build
 
-## Release build — output in build/Release/
+## Release build — output in build/Build/Products/Release/
 app-release:
 	xcodebuild -project $(XCPROJECT) -scheme $(SCHEME) \
 	           -configuration Release \
