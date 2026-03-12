@@ -1,6 +1,6 @@
 # DisplayLink Watchdog
 
-> A macOS menu bar app that automatically restarts the DisplayLink driver when your monitors go dark — so you never have to do it manually again.
+> A macOS menu bar app that automatically recovers your DisplayLink monitors when they go dark — no unplugging, no Terminal, nothing to do.
 
 ---
 
@@ -8,9 +8,9 @@
 
 If you use a DisplayLink USB adapter or dock, you've almost certainly hit this: you wake your Mac from sleep, switch inputs, reconnect your dock, or just come back to your desk — and one or more of your DisplayLink monitors is dark, blank, or showing "No Signal."
 
-The fix everyone in the community already knows is: **quit and restart DisplayLink Manager**. It works almost every time. But it's tedious, and it shouldn't be something you have to do manually.
+The fix everyone in the community already knows is: **unplug the DisplayLink adapter and plug it back in**. It works almost every time. But it means getting up, finding the cable, and waiting for everything to come back — and it shouldn't be something you have to do at all.
 
-**This app does that restart for you, automatically, the moment it detects the problem.**
+**This app fixes it in software, automatically, the moment it detects the problem — no unplugging required.**
 
 ### When does this happen?
 
@@ -18,13 +18,13 @@ This is a well-known, widely-reported issue across the DisplayLink community ([D
 
 | Trigger | What happens |
 |---------|-------------|
-| **Mac wakes from sleep** | One or more DisplayLink monitors don't come back. You have to restart DisplayLink Manager manually. |
-| **Dock or adapter unplugged and replugged** | macOS re-enumerates USB devices, but the DisplayLink driver doesn't re-initialize the display. |
-| **Powered dock on a smart outlet or UPS** | Power cycling the outlet causes a race condition: the driver finishes scanning before the adapter appears on USB. |
-| **MacBook lid open or closed** | Opening or closing the lid can cause DisplayLink monitors to drop. |
-| **After a macOS update** | Permissions or driver state can get reset, leaving monitors blank until the driver is restarted. |
+| **Mac wakes from sleep** | One or more DisplayLink monitors don't come back. You have to unplug and replug the adapter to recover them. |
+| **Dock or adapter unplugged and replugged** | macOS re-enumerates USB devices, but the DisplayLink driver doesn't re-initialize the display — you end up unplugging and replugging a second time. |
+| **Powered dock on a smart outlet or UPS** | Power cycling the outlet causes a race condition: the driver finishes scanning before the adapter appears on USB, leaving the monitor dark. |
+| **MacBook lid open or closed** | Opening or closing the lid can cause DisplayLink monitors to drop, requiring an unplug/replug to recover. |
+| **After a macOS update** | Permissions or driver state can get reset, leaving monitors blank until the adapter is physically reconnected. |
 
-In every case, the root cause is the same: the DisplayLink driver initializes before the adapter is fully ready, and doesn't recover on its own. The fix is always the same: restart the driver. DisplayLink Watchdog automates that.
+In every case, the root cause is the same: the DisplayLink driver initializes before the adapter is fully ready, and doesn't recover on its own. The physical unplug/replug works because it forces USB re-enumeration, giving the driver a fresh start. DisplayLink Watchdog triggers that same re-initialization in software — no cables to touch.
 
 ---
 
