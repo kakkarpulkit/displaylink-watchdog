@@ -118,8 +118,14 @@ final class WatchdogStatus: ObservableObject {
     init() {
         launchAtLogin = (SMAppService.mainApp.status == .enabled)
         refresh()
+        // Bind self strongly before the Task: capturing the optional `self`
+        // directly inside concurrently-executing code is rejected by stricter
+        // Swift concurrency checking (fine locally, fails on CI toolchains).
         timer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.refresh() }
+            guard let strongSelf = self else { return }
+            Task { @MainActor in
+                strongSelf.refresh()
+            }
         }
     }
 
