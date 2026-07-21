@@ -15,6 +15,38 @@ The daemon uses two event sources — zero polling during normal operation:
 
 When both conditions are met (adapter present + base monitors up + DisplayLink monitor missing), it restarts the DisplayLink driver. The fix typically completes in under 2 seconds.
 
+## Menu Bar App (optional)
+
+`make status` answers "is it working" only if you remember to ask. The menu bar
+app answers it without being asked.
+
+```bash
+make menubar          # build build/DisplayLink Watchdog.app
+make install-menubar  # build, copy to /Applications, launch
+```
+
+Then enable **Launch at Login** from the icon.
+
+| Icon | Meaning |
+|------|---------|
+| `display` | Healthy — agent loaded, running, config matches hardware |
+| `exclamationmark.triangle.fill` | Not running, or running but would never act |
+| `display.trianglebadge.exclamationmark` | Cannot reach the CLI binary |
+
+The menu shows the live self-test result and offers **Restart DisplayLink Now**,
+**Re-check Now**, and **Open Log**.
+
+**The app contains no watchdog logic.** It shells out to `displaylink-watchdog
+--selftest` and `--restart` and reads the daemon's log file. The decision logic
+lives in exactly one place — the CLI — so there is one implementation to test and
+one durable log to read after something goes wrong. The app is a front-end; the
+daemon is still what fixes your displays, and it works with or without the app
+installed.
+
+It builds with `swiftc` alone — no Xcode project, no signing setup. Note that
+`SMAppService` launch-at-login is unreliable for unsigned builds; the toggle
+reports its true state rather than pretending it worked.
+
 ## Limitations
 
 **This tool detects a missing display, not a broken one.**

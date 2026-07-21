@@ -4,3 +4,4 @@ tests/test-logic
 *.dSYM/
 .DS_Store
 .omc/
+build/

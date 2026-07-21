@@ -3,7 +3,7 @@ import IOKit
 import IOKit.usb
 import CoreGraphics
 
-let buildVersion = "1.1.0"
+let buildVersion = "1.2.0"
 
 // -- Config (from environment or defaults) --------------------------------
 // Override via environment variables in the LaunchAgent plist:
@@ -309,6 +309,25 @@ if cliArgs.contains("--version") {
     print("displaylink-watchdog \(buildVersion)")
     exit(0)
 }
+// Exposed so front-ends (menu bar app, hotkeys) never reimplement the restart.
+// One implementation, one log.
+if cliArgs.contains("--restart") {
+    workQueue.sync { log("Manual restart requested via --restart.") }
+    restartDisplayLink()
+
+    // DisplayLink needs several seconds to re-enumerate. Measuring immediately
+    // reports a misleading shortfall, so poll for recovery exactly as the
+    // automatic fix path does.
+    var count = getExternalDisplayCount()
+    for _ in 1...postRestartPoll.max where count < expectedDisplays {
+        Thread.sleep(forTimeInterval: postRestartPoll.delay)
+        count = getExternalDisplayCount()
+    }
+
+    workQueue.sync { log("Manual restart complete: \(count)/\(expectedDisplays) displays.") }
+    print("Restarted DisplayLink. \(count)/\(expectedDisplays) external displays online.")
+    exit(count >= expectedDisplays ? 0 : 1)
+}
 if cliArgs.contains("--help") || cliArgs.contains("-h") {
     print("""
     displaylink-watchdog \(buildVersion)
@@ -316,6 +335,7 @@ if cliArgs.contains("--help") || cliArgs.contains("-h") {
     Usage:
       displaylink-watchdog              run as a daemon (normally via LaunchAgent)
       displaylink-watchdog --selftest   verify config against live hardware
+      displaylink-watchdog --restart    restart DisplayLink now, then exit
       displaylink-watchdog --version    print version
       displaylink-watchdog --help       this message
 

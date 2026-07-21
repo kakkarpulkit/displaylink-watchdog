@@ -48,7 +48,7 @@ if [ -x "$BINARY" ]; then
         ok "binary installed: $BINARY ($(cat "$TMPOUT"))"
     else
         bad "binary at $BINARY did not respond to --version"
-        note "predates 1.1.0 (older builds daemonize on unknown flags) — run 'make install' to update"
+        note "predates 1.1.0+ (older builds daemonize on unknown flags) — run 'make install' to update"
     fi
 else
     bad "binary not installed at $BINARY — run 'make install'"

@@ -48,8 +48,20 @@ jobs:
           set -e
           [ "$rc" -eq 2 ] || { echo "unknown flag should exit 2, got $rc"; exit 1; }
 
+      - name: Build menu bar app
+        run: make menubar
+
+      - name: Menu bar bundle is well-formed
+        run: |
+          APP="build/DisplayLink Watchdog.app"
+          test -x "$APP/Contents/MacOS/DisplayLinkWatchdogMenuBar"
+          plutil -lint "$APP/Contents/Info.plist"
+          # LSUIElement must stay true or the app grows a Dock icon.
+          plutil -extract LSUIElement raw "$APP/Contents/Info.plist" | grep -q true
+
       - name: Shell syntax
         run: |
           bash -n install.sh
           bash -n status.sh
+          bash -n build-menubar.sh
           bash -n tests/test-behavior.sh
