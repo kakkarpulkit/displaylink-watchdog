@@ -11,7 +11,17 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BINARY="$SCRIPT_DIR/../displaylink-watchdog"
-LOG="$HOME/scripts/logs/displaylink-watchdog.log"
+
+# Run against a throwaway log, never the production one. An installed daemon may
+# be running while these tests execute; polluting its log would corrupt exactly
+# the evidence you would reach for after a real failure.
+TEST_HOME="$(mktemp -d "${TMPDIR:-/tmp}/dlw-test.XXXXXX")"
+LOG="$TEST_HOME/displaylink-watchdog.log"
+export DLW_LOG_PATH="$LOG"
+# Keep the fallback poll from firing a real DisplayLink restart mid-test.
+export DLW_POLL_INTERVAL=86400
+export DLW_HEARTBEAT_HOURS=0
+
 PASSED=0
 FAILED=0
 TEST_PIDS=()
@@ -21,6 +31,7 @@ cleanup() {
         kill -9 "$pid" 2>/dev/null || true
         wait "$pid" 2>/dev/null || true
     done
+    rm -rf "$TEST_HOME"
 }
 trap cleanup EXIT
 
@@ -105,7 +116,9 @@ for _ in $(seq 1 5); do
 done
 sleep 1
 
-PROCS=$(pgrep -c "displaylink-watchdog" 2>/dev/null || echo "0")
+# Match this repo's binary by full path — a bare name match would also count an
+# installed production daemon and fail a test that is actually passing.
+PROCS=$(pgrep -fc "$BINARY" 2>/dev/null || echo "0")
 if [ "$PROCS" -eq 0 ]; then
     pass "No leaked processes after crash loop"
 else

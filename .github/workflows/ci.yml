@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Swift version
+        run: swift --version
+
+      - name: Build
+        run: make build
+
+      - name: Logic tests
+        run: make test-logic
+
+      # Behavioral tests start the daemon. CI runners have no displays and no
+      # DisplayLink adapter, so lifecycle/signal/log assertions are meaningful
+      # but no fix can ever trigger — which is the intended no-op path.
+      - name: Behavior tests
+        run: make test-behavior
+
+      - name: Self-test runs and reports missing hardware
+        run: |
+          set +e
+          ./displaylink-watchdog --selftest
+          rc=$?
+          set -e
+          # Expect failure on a runner: no adapter, no displays.
+          if [ "$rc" -eq 0 ]; then
+            echo "Expected self-test to fail on hardware-less CI runner"
+            exit 1
+          fi
+          echo "Self-test correctly reported unmet preconditions (exit $rc)"
+
+      - name: CLI contract
+        run: |
+          ./displaylink-watchdog --version
+          ./displaylink-watchdog --help
+          set +e
+          ./displaylink-watchdog --nonsense; rc=$?
+          set -e
+          [ "$rc" -eq 2 ] || { echo "unknown flag should exit 2, got $rc"; exit 1; }
+
+      - name: Shell syntax
+        run: |
+          bash -n install.sh
+          bash -n status.sh
+          bash -n tests/test-behavior.sh

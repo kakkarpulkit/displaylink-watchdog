@@ -15,6 +15,34 @@ The daemon uses two event sources — zero polling during normal operation:
 
 When both conditions are met (adapter present + base monitors up + DisplayLink monitor missing), it restarts the DisplayLink driver. The fix typically completes in under 2 seconds.
 
+## Limitations
+
+**This tool detects a missing display, not a broken one.**
+
+Detection is a count: it compares the number of online external displays against
+`DLW_EXPECTED`. That is exactly right for the power-cycle race above, where the
+adapter genuinely drops off the USB bus and the display genuinely leaves the
+display list.
+
+It will **not** catch a DisplayLink display that stays enumerated while going
+dark — where macOS still reports the display as `active`, `online`, and awake,
+but no frames reach the panel. In that state the count reads healthy, and the
+daemon correctly does nothing. Symptoms:
+
+- The monitor is black, but it still appears in System Settings → Displays
+- Windows can still be moved onto it
+- `make status` reports healthy
+
+If that is your failure, restarting DisplayLink by hand usually clears it:
+
+```bash
+killall DisplayLinkUserAgent DisplayLinkXpcService && open -a "DisplayLink Manager"
+```
+
+Detecting that state automatically is unsolved here — the obvious signals
+(`CGDisplayIsActive`, `CGDisplayIsAsleep`, framebuffer capture, USB presence) all
+report healthy while the panel is dark.
+
 ## Requirements
 
 - macOS 13+ (Ventura or later)
@@ -25,18 +53,59 @@ When both conditions are met (adapter present + base monitors up + DisplayLink m
 ## Install
 
 ```bash
-# Build
 make build
-
-# Interactive install (prompts for your adapter's USB IDs)
 make install
 ```
 
-The installer will ask for:
-- **USB Vendor ID** — find with: `system_profiler SPUSBDataType | grep -A5 DisplayLink`
-- **USB Product ID** — same command
-- **Expected displays** — total external monitors
-- **Base displays** — non-DisplayLink monitors (must be up before fix is attempted)
+The installer auto-detects your adapter's USB IDs, prompts you to confirm the
+display counts, then **verifies the result** — that the agent registered with
+launchd, that the daemon is running, and that a self-test passes against your
+live hardware. If any of those fail it says so and exits non-zero.
+
+For scripted or dotfile installs:
+
+```bash
+./install.sh --yes                        # accept everything detected
+./install.sh --yes --expected 3 --base 2  # override display counts
+./install.sh --vendor-id 0x17e9 --product-id 0x6000 --yes
+```
+
+| Flag | Meaning |
+|------|---------|
+| `--vendor-id HEX` / `--product-id HEX` | Override USB ID auto-detection |
+| `--expected N` / `--base N` | Display counts |
+| `--yes` | Non-interactive |
+| `--uninstall` | Remove agent and binary |
+
+## Is It Actually Working?
+
+The failure mode of a watchdog is **silence** — and a daemon that died months ago
+looks exactly like one that is healthy and simply hasn't needed to fire. Two
+things address that:
+
+```bash
+make status     # is it loaded, running, and matched to your hardware?
+make selftest   # would a fix trigger if the display dropped right now?
+```
+
+`make status` checks the binary, the plist, launchd registration, the live
+config, a hardware self-test, and log freshness — and exits non-zero if anything
+is wrong.
+
+```
+  ok   binary installed: ~/scripts/displaylink-watchdog (displaylink-watchdog 1.1.0)
+  ok   plist present: ~/Library/LaunchAgents/com.displaylink-watchdog.plist
+  ok   daemon running (pid 59069)
+  ok   config: VID=0x17e9 PID=0x6000 expected=3 base=2
+    ok   usb adapter: found at VID 0x17e9/PID 0x6000
+    ok   display count: 3 external display(s) online, base=2, expected=3
+  ok   log active (0h ago)
+
+Healthy. The watchdog is loaded, running, and matches your hardware.
+```
+
+The daemon also writes a heartbeat every `DLW_HEARTBEAT_HOURS` (default 6), so a
+stale log is a real signal rather than an ambiguous one.
 
 ## Uninstall
 
@@ -56,9 +125,13 @@ All config is via environment variables in the LaunchAgent plist (set during ins
 | `DLW_BASE` | `2` | Non-DisplayLink displays that must be up first |
 | `DLW_COOLDOWN` | `30` | Seconds between fix attempts |
 | `DLW_POLL_INTERVAL` | `300` | Fallback poll interval (safety net) |
+| `DLW_HEARTBEAT_HOURS` | `6` | Liveness line in the log; `0` disables |
 | `DLW_LOG_PATH` | `~/scripts/logs/displaylink-watchdog.log` | Log file path |
 
 ## Finding Your USB IDs
+
+The installer detects these automatically. Use this only if detection fails or
+you have multiple DisplayLink devices and need to pick a specific one:
 
 ```bash
 system_profiler SPUSBDataType -json | python3 -c "

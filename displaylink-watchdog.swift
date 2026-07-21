@@ -3,6 +3,8 @@ import IOKit
 import IOKit.usb
 import CoreGraphics
 
+let buildVersion = "1.1.0"
+
 // -- Config (from environment or defaults) --------------------------------
 // Override via environment variables in the LaunchAgent plist:
 //   DLW_VENDOR_ID       USB Vendor ID of DisplayLink adapter (hex, e.g. 0x17e9)
@@ -34,6 +36,10 @@ let expectedDisplays = UInt32(envInt("DLW_EXPECTED", default: 3))
 let baseDisplays     = UInt32(envInt("DLW_BASE", default: 2))
 let cooldownSeconds  = envDouble("DLW_COOLDOWN", default: 30)
 let pollInterval     = envDouble("DLW_POLL_INTERVAL", default: 300)
+// Heartbeat exists so an idle daemon is distinguishable from a dead one. Without
+// it the log is silent until a fix fires, and "working, nothing to do" looks
+// exactly like "died months ago".
+let heartbeatHours   = envDouble("DLW_HEARTBEAT_HOURS", default: 6)
 let postAttachDelay: TimeInterval = 2
 let postRestartPoll  = (delay: 0.5, max: 16)
 let logPath = envString("DLW_LOG_PATH", default: {
@@ -232,7 +238,96 @@ func setupSignalHandlers() {
     }
 }
 
+// -- Heartbeat ------------------------------------------------------------
+func startHeartbeat() {
+    guard heartbeatHours > 0 else { return }
+    let timer = Timer(timeInterval: heartbeatHours * 3600, repeats: true) { _ in
+        workQueue.async {
+            let count = getExternalDisplayCount()
+            let usb = isAdapterPresent() ? "present" : "ABSENT"
+            log("Heartbeat: \(count)/\(expectedDisplays) displays, adapter \(usb).")
+        }
+    }
+    RunLoop.current.add(timer, forMode: .default)
+}
+
+// -- Self Test ------------------------------------------------------------
+// Verifies every precondition the daemon depends on. The failure mode this
+// guards against is silence: wrong USB IDs, an unwritable log, or a mismatched
+// display count all cause the daemon to run forever and never act.
+func runSelfTest() -> Int32 {
+    var failures = 0
+    func check(_ name: String, _ ok: Bool, _ detail: String) {
+        print("\(ok ? "  ok  " : " FAIL ") \(name): \(detail)")
+        if !ok { failures += 1 }
+    }
+
+    print("displaylink-watchdog self-test")
+    print("Config: VID=0x\(String(vendorID, radix: 16)) PID=0x\(String(productID, radix: 16)) "
+        + "expected=\(expectedDisplays) base=\(baseDisplays)")
+    print("")
+
+    let adapter = isAdapterPresent()
+    check("usb adapter", adapter,
+          adapter ? "found at VID 0x\(String(vendorID, radix: 16))/PID 0x\(String(productID, radix: 16))"
+                  : "NOT found — check DLW_VENDOR_ID/DLW_PRODUCT_ID against `system_profiler SPUSBDataType`")
+
+    let count = getExternalDisplayCount()
+    check("display count", count >= baseDisplays,
+          "\(count) external display(s) online, base=\(baseDisplays), expected=\(expectedDisplays)")
+
+    check("config sanity", expectedDisplays > baseDisplays,
+          expectedDisplays > baseDisplays
+              ? "expected(\(expectedDisplays)) > base(\(baseDisplays))"
+              : "expected(\(expectedDisplays)) must exceed base(\(baseDisplays)) or a fix can never trigger")
+
+    let logDir = (logPath as NSString).deletingLastPathComponent
+    try? FileManager.default.createDirectory(atPath: logDir, withIntermediateDirectories: true)
+    let writable = FileManager.default.isWritableFile(atPath: logDir)
+    check("log writable", writable, writable ? logPath : "cannot write to \(logDir)")
+
+    let dlManager = FileManager.default.fileExists(atPath: "/Applications/DisplayLink Manager.app")
+    check("DisplayLink Manager", dlManager,
+          dlManager ? "installed" : "not found at /Applications/DisplayLink Manager.app")
+
+    print("")
+    if failures == 0 {
+        print("All checks passed. A fix would trigger if displays dropped to "
+            + "\(baseDisplays)..\(expectedDisplays - 1) with the adapter present.")
+    } else {
+        print("\(failures) check(s) failed — the daemon would run but never act.")
+    }
+    return failures == 0 ? 0 : 1
+}
+
 // -- Main -----------------------------------------------------------------
+let cliArgs = Array(CommandLine.arguments.dropFirst())
+if cliArgs.contains("--selftest") {
+    exit(runSelfTest())
+}
+if cliArgs.contains("--version") {
+    print("displaylink-watchdog \(buildVersion)")
+    exit(0)
+}
+if cliArgs.contains("--help") || cliArgs.contains("-h") {
+    print("""
+    displaylink-watchdog \(buildVersion)
+
+    Usage:
+      displaylink-watchdog              run as a daemon (normally via LaunchAgent)
+      displaylink-watchdog --selftest   verify config against live hardware
+      displaylink-watchdog --version    print version
+      displaylink-watchdog --help       this message
+
+    Configuration is via environment variables — see README.
+    """)
+    exit(0)
+}
+if let unknown = cliArgs.first(where: { $0.hasPrefix("-") }) {
+    FileHandle.standardError.write("unknown option: \(unknown)\nTry --help\n".data(using: .utf8)!)
+    exit(2)
+}
+
 workQueue.sync {
     if let attrs = try? FileManager.default.attributesOfItem(atPath: logPath),
        let size = attrs[.size] as? Int {
@@ -245,5 +340,6 @@ setupSignalHandlers()
 startUSBWatcher()
 startDisplayWatcher()
 startFallbackPoll()
+startHeartbeat()
 workQueue.async { attemptFix(trigger: "startup") }
 CFRunLoopRun()

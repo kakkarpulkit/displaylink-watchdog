@@ -2,7 +2,7 @@ PREFIX ?= /usr/local
 BINARY = displaylink-watchdog
 SRC    = displaylink-watchdog.swift
 
-.PHONY: build install uninstall test test-logic test-behavior clean
+.PHONY: build install uninstall status selftest test test-logic test-behavior clean
 
 build: $(BINARY)
 
@@ -14,6 +14,12 @@ install: $(BINARY)
 
 uninstall:
 	@./install.sh --uninstall
+
+status:
+	@./status.sh
+
+selftest: $(BINARY)
+	@./$(BINARY) --selftest
 
 test: test-logic test-behavior
 
